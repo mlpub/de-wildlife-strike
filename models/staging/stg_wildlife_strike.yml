@@ -1,0 +1,355 @@
+version: 2
+models:
+  - name: stg_wildlife_strike
+    description: >
+      Staging model for the wildlife strike dataset.
+      This model reads from raw_wildlife_strike, renames columns to snake_case,
+      trims text values, replaces blank strings with null or UNKNOWN where appropriate,
+      standardizes selected categorical values, and filters rows by batch_id using a dbt variable.
+
+    columns:
+      - name: record_id
+        description: Unique identifier for each wildlife strike record.
+        tests:
+          - not_null
+          - unique
+
+      - name: incident_year
+        description: Year when the incident occurred.
+        tests:
+          - not_null
+
+      - name: incident_month
+        description: Month when the incident occurred.
+
+      - name: incident_day
+        description: Day of the month when the incident occurred.
+
+      - name: operator_id
+        description: Operator code from the source dataset, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: operator_name
+        description: Name of the operator or airline, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: aircraft
+        description: Aircraft identifier or aircraft name, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: aircraft_type
+        description: Aircraft type, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: aircraft_make
+        description: Aircraft manufacturer, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: aircraft_model
+        description: Aircraft model, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: aircraft_mass
+        description: Aircraft mass category from the source dataset.
+
+      - name: engine_make
+        description: Engine manufacturer, converted to text and defaulted to UNKNOWN when blank.
+
+      - name: engine_model
+        description: Engine model, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: engines
+        description: Number of engines.
+
+      - name: engine_type
+        description: Engine type, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: engine1_position
+        description: Position of engine 1 after trimming blank values to null.
+
+      - name: engine2_position
+        description: Position of engine 2 converted to text after cleaning blank values to null.
+
+      - name: engine3_position
+        description: Position of engine 3, with CHANGE CODE standardized to C.
+
+      - name: engine4_position
+        description: Position of engine 4 converted to text after cleaning blank values to null.
+
+      - name: airport_id
+        description: Airport identifier, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: airport_name
+        description: Airport name, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: state
+        description: State of the airport, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: faa_region
+        description: FAA region of the airport, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: warning_issued
+        description: Warning indicator, standardized to uppercase and defaulted to UNKNOWN when blank.
+        tests:
+          - accepted_values:
+              values: ['Y', 'N', 'UNKNOWN']
+
+      - name: flight_phase
+        description: Phase of flight, cleaned and defaulted to UNKNOWN when blank.
+        tests:
+          - accepted_values:
+              values: ['LANDING ROLL', 'APPROACH', 'CLIMB', 'UNKNOWN', 'ARRIVAL', 'TAXI', 'PARKED', 'TAKEOFF RUN', 'DEPARTURE', 'DESCENT', 'LANDING', 'LOCAL', 'EN ROUTE']
+
+      - name: visibility
+        description: Visibility condition, cleaned and defaulted to UNKNOWN when blank.
+        tests:
+          - accepted_values:
+              values: ['DAWN', 'DAY', 'DUSK', 'UNKNOWN', 'NIGHT']
+
+      - name: precipitation
+        description: Precipitation condition, cleaned and defaulted to UNKNOWN when blank.
+        tests:
+          - accepted_values:
+              values: ['FOG, SNOW', 'FOG, RAIN', 'FOG', 'NONE', 'FOG, RAIN, SNOW', 'UNKNOWN', 'RAIN, SNOW', 'SNOW', 'RAIN']
+
+      - name: height
+        description: Height of the aircraft at the time of the incident.
+
+      - name: speed
+        description: Speed of the aircraft at the time of the incident.
+
+      - name: distance
+        description: Distance from the airport at the time of the incident.
+
+      - name: species_id
+        description: Species identifier, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: species_name
+        description: Species name, cleaned and defaulted to UNKNOWN when blank.
+
+      - name: species_quantity
+        description: Quantity category of species involved, cleaned and defaulted to UNKNOWN when blank.
+        tests:
+          - accepted_values:
+              values: ['Over 100', '1', '11-100', '2-10', 'UNKNOWN']
+
+      - name: flight_impact
+        description: Impact on flight, with ENGINE SHUT DOWN standardized to ENGINE SHUTDOWN and blank values defaulted to UNKNOWN.
+        tests:
+          - accepted_values:
+              values: ['PRECAUTIONARY LANDING', 'ABORTED TAKEOFF', 'NONE', 'OTHER', 'UNKNOWN', 'ENGINE SHUTDOWN']
+
+      - name: fatalities
+        description: Number of fatalities caused by the wildlife strike.
+
+      - name: injuries
+        description: Number of injuries caused by the wildlife strike.
+
+      - name: aircraft_damage
+        description: Aircraft damage category from the source dataset.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: radome_strike
+        description: Indicates whether the radome was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: radome_damage
+        description: Indicates whether the radome was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: windshield_strike
+        description: Indicates whether the windshield was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: windshield_damage
+        description: Indicates whether the windshield was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: nose_strike
+        description: Indicates whether the nose was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: nose_damage
+        description: Indicates whether the nose was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: engine1_strike
+        description: Indicates whether engine 1 was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: engine1_damage
+        description: Indicates whether engine 1 was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: engine2_strike
+        description: Indicates whether engine 2 was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: engine2_damage
+        description: Indicates whether engine 2 was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: engine3_strike
+        description: Indicates whether engine 3 was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: engine3_damage
+        description: Indicates whether engine 3 was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: engine4_strike
+        description: Indicates whether engine 4 was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: engine4_damage
+        description: Indicates whether engine 4 was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: engine_ingested
+        description: Indicates whether wildlife was ingested into an engine.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: propeller_strike
+        description: Indicates whether the propeller was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: propeller_damage
+        description: Indicates whether the propeller was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: wing_or_rotor_strike
+        description: Indicates whether the wing or rotor was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: wing_or_rotor_damage
+        description: Indicates whether the wing or rotor was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: fuselage_strike
+        description: Indicates whether the fuselage was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: fuselage_damage
+        description: Indicates whether the fuselage was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: landing_gear_strike
+        description: Indicates whether the landing gear was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: landing_gear_damage
+        description: Indicates whether the landing gear was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: tail_strike
+        description: Indicates whether the tail was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: tail_damage
+        description: Indicates whether the tail was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: lights_strike
+        description: Indicates whether lights were struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: lights_damage
+        description: Indicates whether lights were damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: other_strike
+        description: Indicates whether another aircraft part was struck.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: other_damage
+        description: Indicates whether another aircraft part was damaged.
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+
+      - name: batch_id
+        description: Batch identifier used to filter records in this staging model.
+        tests:
+          - not_null
