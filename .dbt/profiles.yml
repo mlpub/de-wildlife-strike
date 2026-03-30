@@ -1,1 +1,11 @@
-
+wildlife_strike_project:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: "{{ env_var('GCP_PROJECT_ID', 'your-gcp-proect-id') }}"
+      dataset: "{{ env_var('BQ_STG_DATASET', 'dev_stg') }}"
+      location: "{{ env_var('GCP_REGION', 'your-gcp-region') }}"
+      threads: "{{ env_var('DBT_THREADS', '2') | int }}"
+      timeout_seconds: 300
