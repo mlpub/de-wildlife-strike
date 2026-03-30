@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: "{{ var('raw_dataset', env_var('BQ_RAW_DATASET', 'dev_raw')) }}"
+    tables:
+      - name: raw_wildlife_strike
