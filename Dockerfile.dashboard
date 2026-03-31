@@ -1,0 +1,19 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=8080 \
+    GCP_REGION=your-gcp-region \
+    BQ_MART_DATASET=dev_mart
+
+WORKDIR /app
+
+COPY requirements.dashboard.txt /app/requirements.dashboard.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r /app/requirements.dashboard.txt
+
+COPY dashboard /app/dashboard
+
+EXPOSE 8080
+
+CMD ["streamlit", "run", "dashboard/dashboard.py", "--server.port=8080", "--server.address=0.0.0.0"]
