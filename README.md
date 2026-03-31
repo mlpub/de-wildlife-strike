@@ -3,10 +3,10 @@
 # Table of Contents
 
 
-## [1. Introduction](#1-introduction)
+[1. Introduction](#1-introduction)
 - [1.1. Problem](#11-problem)
 
-## [2. Exploratory Data Analysis](#2-exploratory-data-analysis)
+[2. Exploratory Data Analysis](#2-exploratory-data-analysis)
 - [2.1. Data Overview](#21-data-overview)
 - [2.2. Missing Value](#22-missing-value)
 - [2.3. Data Quality Finding - Categorical Columns](#23-data-quality-finding---categorical-columns)
