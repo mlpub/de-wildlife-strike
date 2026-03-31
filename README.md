@@ -2,37 +2,47 @@
 
 # Table of Contents
 
+1. [Introduction](#1-introduction)
 
-[1. Introduction](#1-introduction)
+    1.1 [Problem](#11-problem)
 
-  [1.1. Problem](#11-problem)
+2. [Exploratory Data Analysis](#2-exploratory-data-analysis)
 
-[2. Exploratory Data Analysis](#2-exploratory-data-analysis)
+    2.1 [Data Overview](#21-data-overview)
 
-  [2.1. Data Overview](#21-data-overview)
-  
-  [2.2. Missing Value](#22-missing-value)
-  
-  [2.3. Data Quality Finding - Categorical Columns](#23-data-quality-finding---categorical-columns)
+    2.2 [Missing Value](#22-missing-value)
 
-## 3. [Data Pipeline](#3-data-pipeline)
-- [3.1. Raw Layer](#31-raw-layer)
-- [3.2. Transformation Layer](#32-transformation-layer)
-- [3.3. Data Modelling (Star Schema)](#33-data-modelling-star-schema)
-- [3.4. Data Loading](#34-data-loading)
-- [3.5. Orchestration (Prefect)](#35-orchestration-prefect)
-- [3.6. Initial Prototype (Notebook-Based Pipeline)](#36-initial-prototype-notebook-based-pipeline)
-- [3.7. dbt](#37-dbt)
-- [3.8. BigQuery](#38-bigquery)
+    2.3 [Data Quality Finding - Categorical Columns](#23-data-quality-finding---categorical-columns)
 
-## 4. [Deployment and Serving](#4-deployment-and-serving)
-- [4.1. Dashboard](#41-dashboard)
-- [4.2. Cloud Run](#42-cloud-run)
+3. [Data Pipeline](#3-data-pipeline)
 
-## 5. [Pipeline Execution Flow](#5-pipeline-execution-flow)
+    3.1 [Raw Layer](#31-raw-layer)
 
-## 6. [Configuration and Setup](#6-configuration-and-setup)
-- [6.1. Project Setup (gcloud, Docker, Terraform, and Prefect)](#61-project-setup-gcloud-docker-terraform-and-prefect)
+    3.2 [Transformation Layer](#32-transformation-layer)
+
+    3.3 [Data Modelling (Star Schema)](#33-data-modelling-star-schema)
+
+    3.4 [Data Loading](#34-data-loading)
+
+    3.5 [Orchestration (Prefect)](#35-orchestration-prefect)
+
+    3.6 [Initial Prototype (Notebook-Based Pipeline)](#36-initial-prototype-notebook-based-pipeline)
+
+    3.7 [dbt](#37-dbt)
+
+    3.8 [BigQuery](#38-bigquery)
+
+4. [Deployment and Serving](#4-deployment-and-serving)
+
+    4.1 [Dashboard](#41-dashboard)
+
+    4.2 [Cloud Run](#42-cloud-run)
+
+5. [Pipeline Execution Flow](#5-pipeline-execution-flow)
+
+6. [Configuration and Setup](#6-configuration-and-setup)
+
+    6.1 [Project Setup (gcloud, Docker, Terraform, and Prefect)](#61-project-setup-gcloud-docker-terraform-and-prefect)
 
 ---
 
